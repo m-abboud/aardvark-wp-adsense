@@ -7,4 +7,4 @@ To install simply drop the aardvark-adsense folder into your plugins folder and 
 
 From the widget form you enter in your Publisher ID and the ID of the ad you want to use. You can also modify the max height and width allowed for responsive ad units. Along with seperate max width and height fields for both mobile and desktop viewers.
 
-[!Widget Form Image](http://img.mabboud.net/wp-content/uploads/2016/09/aardvark-adsense-widget-form2.png)
+<img src="https://github.com/m-abboud/aardvark-wp-adsense/blob/master/aardvark-adsense-widget-form2.png" width="250">
