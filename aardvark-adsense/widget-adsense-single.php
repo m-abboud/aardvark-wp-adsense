@@ -10,13 +10,54 @@ Author URI: http://mabboud.net
 
 // Block direct requests
 if ( !defined('ABSPATH') )
-	die('-1');
-	
-	
+	die('-1');	
+if (!defined('WP_CONTENT_URL'))
+      define('WP_CONTENT_URL', get_option('siteurl').'/wp-content');
+if (!defined('WP_CONTENT_DIR'))
+      define('WP_CONTENT_DIR', ABSPATH.'wp-content');
+if (!defined('WP_PLUGIN_URL'))
+      define('WP_PLUGIN_URL', WP_CONTENT_URL.'/plugins');
+if (!defined('WP_PLUGIN_DIR'))
+      define('WP_PLUGIN_DIR', WP_CONTENT_DIR.'/plugins');
+
 add_action( 'widgets_init', function(){
      register_widget( 'AardvarkSense_Single_Ad_Widget' );
 });	
 
+
+function admin_init_aardvark() {
+  register_setting('aardvark-adsense', 'adsense_client_id');
+}
+
+function Admin_Menu_AardvarkAdSense() {
+	add_options_page('Aardvark AdSense', 'Aardvark AdSense', 'manage_options', 'aardvark-adsense', 'Options_Menu_AardvarkAdSense');
+}
+
+function Options_Menu_AardvarkAdSense() {
+	include(WP_PLUGIN_DIR.'/aardvark-adsense/options.php');  
+}
+
+function Aardvark_Mobile_Ads() {
+	$adsense_client_id = get_option('adsense_client_id');
+
+	?>
+		<!-- Mobile ad overlay and fullscreen ads -->
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+		  (adsbygoogle = window.adsbygoogle || []).push({
+		    google_ad_client: "<?php echo $adsense_client_id ?>",
+		    enable_page_level_ads: true
+		  });
+		</script>  
+	<?php
+}
+
+if (is_admin()) {
+	add_action('admin_init', 'admin_init_aardvark');
+	add_action('admin_menu', 'Admin_Menu_AardvarkAdSense');
+}
+
+add_action('wp_head', 'Aardvark_Mobile_Ads');
 
 class AardvarkSense_Single_Ad_Widget extends WP_Widget {
 	function __construct() {
